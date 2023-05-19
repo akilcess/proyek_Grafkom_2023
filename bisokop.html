@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.135.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<style>
+    body { margin: 0; 
+        overflow: hidden;}
+
+</style>
+<body>
+
+    <script>
+ 
+// Membuat tembok depan
+
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+var depanGeometry = new THREE.BoxGeometry(10, 2, 1);
+var depanMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+var depanCube = new THREE.Mesh(depanGeometry, depanMaterial);
+depanCube.position.z = -5;
+scene.add(depanCube);
+
+// Membuat tembok kiri
+var kiriGeometry = new THREE.BoxGeometry(1, 2, 10);
+var kiriMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+var kiriCube = new THREE.Mesh(kiriGeometry, kiriMaterial);
+kiriCube.position.x = -5;
+scene.add(kiriCube);
+
+// Membuat tembok kanan
+var kananGeometry = new THREE.BoxGeometry(1, 2, 10);
+var kananMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+var kananCube = new THREE.Mesh(kananGeometry, kananMaterial);
+kananCube.position.x = 5;
+scene.add(kananCube);
+
+// Membuat lantai
+var lantaiGeometry = new THREE.PlaneGeometry(10, 10);
+var lantaiMaterial = new THREE.MeshBasicMaterial({ color: 0x808080, side: THREE.DoubleSide });
+var lantai = new THREE.Mesh(lantaiGeometry, lantaiMaterial);
+lantai.rotation.x = -Math.PI / 2;
+lantai.position.y = -1;
+scene.add(lantai);
+
+
+// Menambahkan pencahayaan
+var light = new THREE.PointLight(0xffffff, 1, 100);
+light.position.set(0, 0, 10);
+scene.add(light);
+
+// Mengatur posisi kamera
+camera.position.z = 5;
+
+const loadkursi = new OBJLoader();
+
+
+var keyboard = {};
+
+function onKeyDown(event) {
+  keyboard[event.code] = true;
+}
+
+function onKeyUp(event) {
+  keyboard[event.code] = false;
+}
+
+document.addEventListener('keydown', onKeyDown);
+document.addEventListener('keyup', onKeyUp);
+
+// Animasi
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (keyboard['KeyA']) {
+    camera.position.x -= 0.1;
+  }
+  if (keyboard['KeyD']) {
+    camera.position.x += 0.1;
+  }
+  if (keyboard['KeyW']) {
+    camera.position.z -= 0.1;
+  }
+  if (keyboard['KeyS']) {
+    camera.position.z += 0.1;
+  }
+
+  renderer.render(scene, camera);
+
+  
+}
+animate();
+
+
+    </script>
+</body>
+</html>
